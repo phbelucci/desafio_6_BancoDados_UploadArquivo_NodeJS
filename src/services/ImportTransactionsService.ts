@@ -60,11 +60,11 @@ class ImportTransactionsService {
     .filter(category => !existentCategoriesTitles.includes(category))
     .filter((value, index, self) => self.indexOf( value ) === index);
 
-    const newCategories = categoriesRepository.create({
+    const newCategories = categoriesRepository.create(
       addCategoryTitles.map(title => ({
         title,
       })),
-    });
+    );
 
     await categoriesRepository.save(newCategories);
 
@@ -84,6 +84,8 @@ class ImportTransactionsService {
     await transactionRepository.save(createdTransactions);
 
     await fs.promises.unlink(filePath);
+
+    return createdTransactions;
   }
 }
 
